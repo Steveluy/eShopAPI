@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="scripts/jquery-3.4.1.js"></script>
+</head>
+<body>
+    用户名<input type="text" id="username">
+    密码<input type="text" id="pwd">
+    <input type="button" id="btnLogin" value="登录">
+    <input type="button" id="btnGetInfo" value="获取登录信息">
+</body>
+</html>
+<script>
+    $("#btnLogin").on("click", function () {
+        $.ajax({
+            url: "/login/in",
+            type: "post",
+            data: {
+                Name: $("#username").val(),
+                Password: $("#pwd").val()
+            }
+        }).done(function (data) {
+            if (data) {
+                localStorage.setItem("token", data);
+            }
+            console.log(data);
+        }).fail(function (error) {
+            console.log(error);
+        });
+    })
+
+    $("#btnGetInfo").on("click", function () {
+        $.ajax({
+            url: "/login/GetInfo",
+            headers: { "token": localStorage.getItem("token") }
+        }).done(function (data) {
+            console.log(data);
+        }).fail(function (error) {
+            console.log(error);
+        });
+    })
+</script>
